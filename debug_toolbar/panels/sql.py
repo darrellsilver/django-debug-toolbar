@@ -126,6 +126,7 @@ class DatabaseStatTracker(util.CursorDebugWrapper):
                 'is_slow': (duration > SQL_WARNING_THRESHOLD),
                 'is_select': sql.lower().strip().startswith('select'),
                 'template_info': template_info,
+                'asof': datetime.now(),
             })
 util.CursorDebugWrapper = DatabaseStatTracker
 

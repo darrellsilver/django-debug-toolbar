@@ -11,7 +11,7 @@
 	<tbody>
 		{% for query in queries %}
 			<tr class="{% cycle 'djDebugOdd' 'djDebugEven' %}">
-				<td>{{ query.duration|floatformat:"2" }}</td>
+				<td><strong>{{ query.duration|floatformat:"2" }}</strong><br>{{query.asof}}</td>
 				<td>
 				{% if query.params %}
 					{% if query.is_select %}
