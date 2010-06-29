@@ -112,7 +112,10 @@ class DatabaseStatTracker(util.CursorDebugWrapper):
             except:
                 pass
             del cur_frame
-
+            
+            time_since_prev = None
+            if len(self.db.queries) > 0:
+                time_since_prev = ms_from_timedelta(start - self.db.queries[-1]['start_time'])
             # We keep `sql` to maintain backwards compatibility
             self.db.queries.append({
                 'sql': self.db.ops.last_executed_query(self.cursor, sql, params),
@@ -123,10 +126,10 @@ class DatabaseStatTracker(util.CursorDebugWrapper):
                 'stacktrace': stacktrace,
                 'start_time': start,
                 'stop_time': stop,
+                'time_since_prev': time_since_prev,
                 'is_slow': (duration > SQL_WARNING_THRESHOLD),
                 'is_select': sql.lower().strip().startswith('select'),
                 'template_info': template_info,
-                'asof': datetime.now(),
             })
 util.CursorDebugWrapper = DatabaseStatTracker
 
